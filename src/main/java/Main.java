@@ -2,6 +2,11 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+    /*
+    -w 1 -b 1 -count 1
+    split()
+    [-w, 1, -b, 1, -count, 1]
+     */
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Введите время для работы и отдыха:");
         String[] userInput = new Scanner(System.in).nextLine().split(" ");
@@ -11,6 +16,7 @@ public class Main {
         int breakTime = 1;
         int sizebreak = 30;
         int sizework = 30;
+        int count = 1;
 
         for (int i = 0; i < userInput.length; i++) {
             switch (userInput[i]) {
@@ -19,15 +25,19 @@ public class Main {
                         -w - сколько работать
                         -b - сколько отдыхать
                         --help - вызвать помощь
+                        -count - количество итераций
                         """);
                 case "-w" -> workTime = Integer.parseInt(userInput[++i]);
                 case "-b" -> breakTime = Integer.parseInt(userInput[++i]);
+                case "-count" -> count = Integer.parseInt(userInput[++i]);
             }
         }
         System.out.printf("workTime = %d, breakTime = %d", workTime, breakTime);
 
         long startTime = System.currentTimeMillis();
-        timer(workTime, breakTime, sizebreak, sizework);
+        for (int i = 1; i <= count; i++) {
+            timer(workTime * ((int) Math.pow(2, (i - 1))), breakTime, sizebreak, sizework);
+        }
         long endTime = System.currentTimeMillis();
         System.out.println("Таймер работал " + (endTime - startTime)/(1000 * 60) + " min");
     }
